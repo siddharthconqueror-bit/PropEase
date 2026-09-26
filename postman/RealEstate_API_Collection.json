@@ -1,0 +1,661 @@
+{
+  "info": {
+    "name": "Real Estate Listing & Booking Platform API",
+    "description": "Complete Postman collection covering Authentication, Properties, Bookings, Agent Management, and Admin APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Anand Sundaram\",\n  \"email\": \"anand@propease.in\",\n  \"password\": \"password123\",\n  \"phone\": \"+91 98402 33445\",\n  \"role\": \"CUSTOMER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rajesh Kannan\",\n  \"email\": \"rajesh@propease.in\",\n  \"password\": \"agent123password\",\n  \"phone\": \"+91 94433 11223\",\n  \"role\": \"AGENT\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dinesh@propease.in\",\n  \"password\": \"customer123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login Agent",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"senthil@propease.in\",\n  \"password\": \"agent123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@propease.in\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Properties (Public & Agent)",
+      "item": [
+        {
+          "name": "Get All Available Properties (Paginated)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/properties?page=0&size=10&sortBy=price&sortDir=asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "price"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "asc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Properties with Filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/properties/search?city=Chennai&propertyType=APARTMENT&minBedrooms=2&minPrice=5000000&maxPrice=15000000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "city",
+                  "value": "Chennai"
+                },
+                {
+                  "key": "propertyType",
+                  "value": "APARTMENT"
+                },
+                {
+                  "key": "minBedrooms",
+                  "value": "2"
+                },
+                {
+                  "key": "minPrice",
+                  "value": "5000000"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "15000000"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Featured Properties",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/properties/featured",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "featured"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Property Details By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/properties/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Property (Agent Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Coimbatore Peelamedu 3 BHK Builder Apartment\",\n  \"description\": \"Brand new luxury 3 BHK apartment right on Avinashi Road near PSG Tech.\",\n  \"price\": 9200000,\n  \"location\": \"Avinashi Road, Near PSG College of Technology\",\n  \"city\": \"Coimbatore\",\n  \"state\": \"Tamil Nadu\",\n  \"postalCode\": \"641004\",\n  \"propertyType\": \"APARTMENT\",\n  \"bedrooms\": 3,\n  \"bathrooms\": 3,\n  \"balconies\": 2,\n  \"areaSqft\": 1650,\n  \"parkingAvailable\": true,\n  \"furnishingStatus\": \"SEMI_FURNISHED\",\n  \"yearBuilt\": 2024,\n  \"latitude\": 11.0315,\n  \"longitude\": 77.0096,\n  \"featured\": true,\n  \"images\": [\n    {\n      \"imageUrl\": \"/properties/tn_stilt_builder_apt.jpg\",\n      \"displayOrder\": 0,\n      \"isPrimary\": true\n    },\n    {\n      \"imageUrl\": \"/properties/tn_glass_boutique_apt.jpg\",\n      \"displayOrder\": 1,\n      \"isPrimary\": false\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/properties",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Property (Owner Agent/Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Coimbatore Peelamedu 3 BHK Builder Apartment (Updated)\",\n  \"description\": \"Brand new ready-to-move 3 BHK luxury apartment with Siruvani water connection.\",\n  \"price\": 9000000,\n  \"location\": \"Avinashi Road, Near PSG College\",\n  \"city\": \"Coimbatore\",\n  \"state\": \"Tamil Nadu\",\n  \"postalCode\": \"641004\",\n  \"propertyType\": \"APARTMENT\",\n  \"bedrooms\": 3,\n  \"bathrooms\": 3,\n  \"balconies\": 2,\n  \"areaSqft\": 1650,\n  \"parkingAvailable\": true,\n  \"furnishingStatus\": \"FURNISHED\",\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/properties/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Property (Soft Delete)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/properties/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "properties",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Bookings (Customer & Agent)",
+      "item": [
+        {
+          "name": "Create Visit Booking (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propertyId\": 1,\n  \"bookingDate\": \"2026-10-05\",\n  \"preferredTime\": \"10:30 AM\",\n  \"purpose\": \"Site Inspection & Document Check\",\n  \"customerMessage\": \"Looking forward to checking floor plan and RERA documents.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Bookings (Customer)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/my?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "my"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking (Customer)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/1/cancel?reason=Scheduling conflict",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "1",
+                "cancel"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Agent Property Booking Requests (Agent)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/agent/bookings?status=PENDING",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agent",
+                "bookings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Confirm Booking Request (Agent)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/agent/bookings/2/confirm",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agent",
+                "bookings",
+                "2",
+                "confirm"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reject Booking Request (Agent)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/agent/bookings/2/reject?reason=Slot unavailable",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agent",
+                "bookings",
+                "2",
+                "reject"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Admin Management",
+      "item": [
+        {
+          "name": "Get Admin Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stats"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User Status (Activate/Deactivate)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"active\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/2/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "2",
+                "status"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Bookings Across Platform",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/bookings?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "bookings"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
